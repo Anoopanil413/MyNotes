@@ -24,7 +24,6 @@ export const    authenticatingtok = async(token)=>{
             token: token,
           };
         const sessionToken = await client.magicLinks.authenticate(params);
-        console.log("sessiotoken",sessionToken)
           return sessionToken
     } catch (error) {
         console.log("authentication error",error)

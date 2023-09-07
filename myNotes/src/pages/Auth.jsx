@@ -9,7 +9,6 @@ const Auth = () => {
     const [useparams] = useSearchParams();
     const cookie = new Cookies();
 
-
     useEffect(() => {
         console.log("params token", useparams.get("token"))
         instance.post('/user/authHome',

@@ -10,9 +10,9 @@ const NotesContainer = () => {
     const [notesData, setNotesData] = useState([])
 
     useEffect(() => {
-        console.log("printing token", cookie.get("sessionToken").authUserToken.session_token)
-        instance.get('/user/getNotes', {},
-            { headers: { sessiontoken: cookie.get("sessionToken").session_token } }
+        console.log("hellooooo cook", cookie.get("sessionToken")?.authUserToken)
+        instance.get(`/user/getNotes?emailId = ${cookie.get("sessionToken")?.authUserToken?.user?.emails[0].email}`,
+            { headers: { sessiontoken: cookie.get("sessionToken")?.authUserToken?.session_token } }
         ).then((resp) => {
             setNotesData(resp.data)
         }).catch((err) => {
