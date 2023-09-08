@@ -16,13 +16,8 @@ export const userLOgin = async(req,res)=>{
         const isValidEmail = emailRegex.test(email);
         if(isValidEmail){
             const creatingLink = await createLink(email)
-            // console.log("in login",email,creatingLink,isValidEmail)
-            const params = {
-                user_id:creatingLink?.user_id ,
-              };
-            const session_tok = await client.sessions.get(params)
-
-            res.status(200).json(creatingLink)
+          
+            res.status(200).json({creatingLink})
         }else{
             res.status(401).json({message:"user unauthrized"})
         }
