@@ -14,11 +14,10 @@ function App() {
     <>
       <div className="main">
         <Routes>
-          <Route path='/login' element={<Login />} />
-          <Route path='/home' element={<NotesContainer />} />
-          <Route path='/auth' element={<Auth />} />
 
-
+            <Route path='/login' element={<Login />} />
+            <Route path='/home' element={<NotesContainer />} />
+            <Route path='/auth' element={<Auth />} />
         </Routes>
 
       </div>

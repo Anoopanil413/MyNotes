@@ -1,5 +1,5 @@
 import express from "express"
-import {createNote,getNotes} from '../controllers/notesController.js'
+import {createNote,getNotes,deleteNote} from '../controllers/notesController.js'
 import {userLOgin,authorisedUser} from '../controllers/userControllers.js'
 import {authMiddleware} from '../controllers/auth.js'
 
@@ -14,6 +14,8 @@ router.post('/login',userLOgin)
 
 
 router.post('/authHome',authorisedUser)
+
+router.delete('/deleteNote',authMiddleware,deleteNote)
 
 
 

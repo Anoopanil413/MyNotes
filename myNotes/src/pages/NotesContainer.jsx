@@ -4,17 +4,18 @@ import Headers from '../components/header/Headers'
 import CreateNotes from '../components/createNotes/CreateNotes'
 import instance from '../axiosfile/baseUrl'
 import Cookies from "universal-cookie";
+import MyContext from '../mycontext/MyContext'
 
 const NotesContainer = () => {
     const cookie = new Cookies();
     const [notesData, setNotesData] = useState([])
 
     useEffect(() => {
-        console.log("hellooooo cook", cookie.get("sessionToken")?.authUserToken)
         instance.get(`/user/getNotes?emailId = ${cookie.get("sessionToken")?.authUserToken?.user?.emails[0].email}`,
             { headers: { sessiontoken: cookie.get("sessionToken")?.authUserToken?.session_token } }
         ).then((resp) => {
-            setNotesData(resp.data)
+            console.log("data here", resp.data?.user[0]?.notes)
+            setNotesData(resp.data?.user[0]?.notes)
         }).catch((err) => {
             alert("USER NOT AUTHENTICATED");
         });
@@ -24,15 +25,15 @@ const NotesContainer = () => {
 
     return (
         <div className="notes">
-            <Headers />
-            <CreateNotes />
-            {
-                notesData.map((note, index) => (
-
-                    <NoteCreater key={index} note={mynote} />
-                ))
-            }
-
+            <MyContext.Provider value={{ notesData, setNotesData }}>
+                <Headers />
+                <CreateNotes />
+                {
+                    notesData.map((note, index) => (
+                        <NoteCreater key={index} notes={note} />
+                    ))
+                }
+            </MyContext.Provider>
         </div>
     )
 }

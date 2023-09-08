@@ -1,23 +1,31 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import './createNote.css'
 import instance from '../../axiosfile/baseUrl';
+import Cookies from "universal-cookie";
+import MyContext from '../../mycontext/MyContext';
+
 
 
 const CreateNotes = () => {
     const textareaRef = useRef(null);
+    const cookie = new Cookies();
+
+    const { notesData, setNotesData } = useContext(MyContext)
+
     const [noteCreatedState, setnoteCreatedState] = useState(false)
     const [loading, setLoading] = useState(false);
     const [noteContent, setNoteContent] = useState('');
 
 
 
-
     const handleClick = () => {
         const inputValue = textareaRef.current.value.trim();
         if (inputValue !== "" && inputValue !== null) {
-            instance.post('/user/writeNote', { content: inputValue })
+            instance.post(`/user/writeNote?emailId = ${cookie.get("sessionToken")?.authUserToken?.user?.emails[0].email}`, { content: inputValue },
+                { headers: { sessiontoken: cookie.get("sessionToken")?.authUserToken?.session_token } })
                 .then(response => {
-                    console.log('API response:', response.data);
+                    console.log('API response:', response.data?.user[0]?.notes);
+                    setNotesData(response.data?.user[0]?.notes)
                     setnoteCreatedState(true);
                     setNoteContent(inputValue);
                     textareaRef.current.value = '';
